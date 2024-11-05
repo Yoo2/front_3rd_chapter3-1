@@ -1,5 +1,6 @@
 import { Event, EventForm } from '../types';
 
+// ? 테스트를 위해 내부에서만 쓰는 코드를 export 해야하는지?
 export function parseDateTime(date: string, time: string) {
   return new Date(`${date}T${time}`);
 }
