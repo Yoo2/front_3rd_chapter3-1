@@ -101,32 +101,7 @@ describe('findOverlappingEvents', () => {
   ];
   it('새 이벤트와 겹치는 모든 이벤트를 반환한다', () => {
     const newEvent = { date: '2024-11-01', startTime: '10:30', endTime: '13:00' } as Event;
-    expect(findOverlappingEvents(newEvent, mockEvents)).toEqual([
-      {
-        id: '2b7545a6-ebee-426c-b906-2329bc8d62bd',
-        title: '팀 회의',
-        date: '2024-11-01',
-        startTime: '10:00',
-        endTime: '11:00',
-        description: '주간 팀 미팅',
-        location: '회의실 A',
-        category: '업무',
-        repeat: { type: 'none', interval: 0 },
-        notificationTime: 1,
-      },
-      {
-        id: '09702fb3-a478-40b3-905e-9ab3c8849dcd',
-        title: '점심 약속',
-        date: '2024-11-01',
-        startTime: '12:30',
-        endTime: '13:30',
-        description: '동료와 점심 식사',
-        location: '회사 근처 식당',
-        category: '개인',
-        repeat: { type: 'none', interval: 0 },
-        notificationTime: 1,
-      },
-    ]);
+    expect(findOverlappingEvents(newEvent, mockEvents)).toEqual([mockEvents[0], mockEvents[1]]);
   });
 
   it('겹치는 이벤트가 없으면 빈 배열을 반환한다', () => {

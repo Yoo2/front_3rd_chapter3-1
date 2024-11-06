@@ -42,18 +42,7 @@ describe('getUpcomingEvents', () => {
   ];
   it('알림 시간이 정확히 도래한 이벤트를 반환한다', () => {
     expect(getUpcomingEvents(mockEvents, new Date('2024-07-01T09:59'), [])).toEqual([
-      {
-        id: '2b7545a6-ebee-426c-b906-2329bc8d62bd',
-        title: '팀 회의',
-        date: '2024-07-01',
-        startTime: '10:00',
-        endTime: '11:00',
-        description: '주간 팀 미팅, 이벤트 2',
-        location: '회의실 A',
-        category: '업무',
-        repeat: { type: 'none', interval: 0 },
-        notificationTime: 1,
-      },
+      mockEvents[0],
     ]);
   });
 
