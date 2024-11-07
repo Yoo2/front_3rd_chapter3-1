@@ -1,5 +1,5 @@
 import { atom, useAtom } from 'jotai';
-import { ChangeEvent, useEffect } from 'react';
+import { ChangeEvent, useCallback, useEffect } from 'react';
 
 import { Event, RepeatType } from '../types';
 import { getTimeErrorMessage } from '../utils/timeValidation';
@@ -72,19 +72,25 @@ export const useEventForm = (initialEvent?: Event) => {
     setNotificationTime,
   ]);
 
-  const handleStartTimeChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const newStartTime = e.target.value;
-    setStartTime(newStartTime);
-    setTimeError(getTimeErrorMessage(newStartTime, endTime));
-  };
+  const handleStartTimeChange = useCallback(
+    (e: ChangeEvent<HTMLInputElement>) => {
+      const newStartTime = e.target.value;
+      setStartTime(newStartTime);
+      setTimeError(getTimeErrorMessage(newStartTime, endTime));
+    },
+    [setStartTime, setTimeError, endTime]
+  );
 
-  const handleEndTimeChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const newEndTime = e.target.value;
-    setEndTime(newEndTime);
-    setTimeError(getTimeErrorMessage(startTime, newEndTime));
-  };
+  const handleEndTimeChange = useCallback(
+    (e: ChangeEvent<HTMLInputElement>) => {
+      const newEndTime = e.target.value;
+      setEndTime(newEndTime);
+      setTimeError(getTimeErrorMessage(startTime, newEndTime));
+    },
+    [setEndTime, setTimeError, startTime]
+  );
 
-  const resetForm = () => {
+  const resetForm = useCallback(() => {
     setTitle('');
     setDate('');
     setStartTime('');
@@ -97,23 +103,53 @@ export const useEventForm = (initialEvent?: Event) => {
     setRepeatInterval(1);
     setRepeatEndDate('');
     setNotificationTime(10);
-  };
+  }, [
+    setTitle,
+    setDate,
+    setStartTime,
+    setEndTime,
+    setDescription,
+    setLocation,
+    setCategory,
+    setIsRepeating,
+    setRepeatType,
+    setRepeatInterval,
+    setRepeatEndDate,
+    setNotificationTime,
+  ]);
 
-  const editEvent = (event: Event) => {
-    setEditingEvent(event);
-    setTitle(event.title);
-    setDate(event.date);
-    setStartTime(event.startTime);
-    setEndTime(event.endTime);
-    setDescription(event.description);
-    setLocation(event.location);
-    setCategory(event.category);
-    setIsRepeating(event.repeat.type !== 'none');
-    setRepeatType(event.repeat.type);
-    setRepeatInterval(event.repeat.interval);
-    setRepeatEndDate(event.repeat.endDate || '');
-    setNotificationTime(event.notificationTime);
-  };
+  const editEvent = useCallback(
+    (event: Event) => {
+      setEditingEvent(event);
+      setTitle(event.title);
+      setDate(event.date);
+      setStartTime(event.startTime);
+      setEndTime(event.endTime);
+      setDescription(event.description);
+      setLocation(event.location);
+      setCategory(event.category);
+      setIsRepeating(event.repeat.type !== 'none');
+      setRepeatType(event.repeat.type);
+      setRepeatInterval(event.repeat.interval);
+      setRepeatEndDate(event.repeat.endDate || '');
+      setNotificationTime(event.notificationTime);
+    },
+    [
+      setCategory,
+      setDate,
+      setDescription,
+      setEditingEvent,
+      setEndTime,
+      setIsRepeating,
+      setLocation,
+      setRepeatEndDate,
+      setRepeatInterval,
+      setRepeatType,
+      setStartTime,
+      setTitle,
+      setNotificationTime,
+    ]
+  );
 
   return {
     title,
