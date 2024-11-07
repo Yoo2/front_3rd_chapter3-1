@@ -11,6 +11,7 @@ import {
 } from '@chakra-ui/react';
 import React from 'react';
 
+import { useEventForm } from '../hooks/useEventForm';
 import { Event } from '../types';
 
 const notificationOptions = [
@@ -26,7 +27,6 @@ interface Props {
   setSearchTerm: React.Dispatch<React.SetStateAction<string>>;
   filteredEvents: Event[];
   notifiedEvents: string[];
-  editEvent: (event: Event) => void;
   deleteEvent: (id: string) => Promise<void>;
 }
 
@@ -35,9 +35,10 @@ const EventView = ({
   setSearchTerm,
   filteredEvents,
   notifiedEvents,
-  editEvent,
   deleteEvent,
 }: Props) => {
+  const { editEvent } = useEventForm();
+
   return (
     <VStack data-testid="event-list" w="500px" h="full" overflowY="auto">
       <FormControl>

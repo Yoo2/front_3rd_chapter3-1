@@ -1,30 +1,76 @@
-import { ChangeEvent, useState } from 'react';
+import { atom, useAtom } from 'jotai';
+import { ChangeEvent, useEffect } from 'react';
 
 import { Event, RepeatType } from '../types';
 import { getTimeErrorMessage } from '../utils/timeValidation';
 
 type TimeErrorRecord = Record<'startTimeError' | 'endTimeError', string | null>;
 
+const titleAtom = atom('');
+const dateAtom = atom('');
+const startTimeAtom = atom('');
+const endTimeAtom = atom('');
+const descriptionAtom = atom('');
+const locationAtom = atom('');
+const categoryAtom = atom('');
+const isRepeatingAtom = atom(false);
+const repeatTypeAtom = atom<RepeatType>('none');
+const repeatIntervalAtom = atom(1);
+const repeatEndDateAtom = atom('');
+const notificationTimeAtom = atom(10);
+const editingEventAtom = atom<Event | null>(null);
+const timeErrorAtom = atom<TimeErrorRecord>({
+  startTimeError: null,
+  endTimeError: null,
+});
+
 export const useEventForm = (initialEvent?: Event) => {
-  const [title, setTitle] = useState(initialEvent?.title || '');
-  const [date, setDate] = useState(initialEvent?.date || '');
-  const [startTime, setStartTime] = useState(initialEvent?.startTime || '');
-  const [endTime, setEndTime] = useState(initialEvent?.endTime || '');
-  const [description, setDescription] = useState(initialEvent?.description || '');
-  const [location, setLocation] = useState(initialEvent?.location || '');
-  const [category, setCategory] = useState(initialEvent?.category || '');
-  const [isRepeating, setIsRepeating] = useState(initialEvent?.repeat.type !== 'none');
-  const [repeatType, setRepeatType] = useState<RepeatType>(initialEvent?.repeat.type || 'none');
-  const [repeatInterval, setRepeatInterval] = useState(initialEvent?.repeat.interval || 1);
-  const [repeatEndDate, setRepeatEndDate] = useState(initialEvent?.repeat.endDate || '');
-  const [notificationTime, setNotificationTime] = useState(initialEvent?.notificationTime || 10);
+  const [title, setTitle] = useAtom(titleAtom);
+  const [date, setDate] = useAtom(dateAtom);
+  const [startTime, setStartTime] = useAtom(startTimeAtom);
+  const [endTime, setEndTime] = useAtom(endTimeAtom);
+  const [description, setDescription] = useAtom(descriptionAtom);
+  const [location, setLocation] = useAtom(locationAtom);
+  const [category, setCategory] = useAtom(categoryAtom);
+  const [isRepeating, setIsRepeating] = useAtom(isRepeatingAtom);
+  const [repeatType, setRepeatType] = useAtom(repeatTypeAtom);
+  const [repeatInterval, setRepeatInterval] = useAtom(repeatIntervalAtom);
+  const [repeatEndDate, setRepeatEndDate] = useAtom(repeatEndDateAtom);
+  const [notificationTime, setNotificationTime] = useAtom(notificationTimeAtom);
 
-  const [editingEvent, setEditingEvent] = useState<Event | null>(null);
+  const [editingEvent, setEditingEvent] = useAtom(editingEventAtom);
+  const [{ startTimeError, endTimeError }, setTimeError] = useAtom(timeErrorAtom);
 
-  const [{ startTimeError, endTimeError }, setTimeError] = useState<TimeErrorRecord>({
-    startTimeError: null,
-    endTimeError: null,
-  });
+  useEffect(() => {
+    if (initialEvent) {
+      setTitle(initialEvent.title);
+      setDate(initialEvent.date);
+      setStartTime(initialEvent.startTime);
+      setEndTime(initialEvent.endTime);
+      setDescription(initialEvent.description);
+      setLocation(initialEvent.location);
+      setCategory(initialEvent.category);
+      setIsRepeating(initialEvent.repeat.type !== 'none');
+      setRepeatType(initialEvent.repeat.type);
+      setRepeatInterval(initialEvent.repeat.interval);
+      setRepeatEndDate(initialEvent.repeat.endDate || '');
+      setNotificationTime(initialEvent.notificationTime);
+    }
+  }, [
+    initialEvent,
+    setTitle,
+    setDate,
+    setStartTime,
+    setEndTime,
+    setDescription,
+    setLocation,
+    setCategory,
+    setIsRepeating,
+    setRepeatType,
+    setRepeatInterval,
+    setRepeatEndDate,
+    setNotificationTime,
+  ]);
 
   const handleStartTimeChange = (e: ChangeEvent<HTMLInputElement>) => {
     const newStartTime = e.target.value;

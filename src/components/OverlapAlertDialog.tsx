@@ -10,7 +10,8 @@ import {
 } from '@chakra-ui/react';
 import React from 'react';
 
-import { Event, EventForm, RepeatType } from '../types';
+import { useEventForm } from '../hooks/useEventForm';
+import { Event, EventForm } from '../types';
 
 interface Props {
   isOverlapDialogOpen: boolean;
@@ -18,19 +19,6 @@ interface Props {
   setIsOverlapDialogOpen: React.Dispatch<React.SetStateAction<boolean>>;
   overlappingEvents: Event[];
   saveEvent: (eventData: Event | EventForm) => Promise<void>;
-  editingEvent: Event | null;
-  title: string;
-  date: string;
-  startTime: string;
-  endTime: string;
-  description: string;
-  location: string;
-  category: string;
-  isRepeating: boolean;
-  repeatType: RepeatType;
-  repeatInterval: number;
-  repeatEndDate: string;
-  notificationTime: number;
 }
 
 const OverlapAlertDialog = ({
@@ -39,20 +27,22 @@ const OverlapAlertDialog = ({
   setIsOverlapDialogOpen,
   overlappingEvents,
   saveEvent,
-  editingEvent,
-  title,
-  date,
-  startTime,
-  endTime,
-  description,
-  location,
-  category,
-  isRepeating,
-  repeatType,
-  repeatInterval,
-  repeatEndDate,
-  notificationTime,
 }: Props) => {
+  const {
+    title,
+    date,
+    startTime,
+    endTime,
+    description,
+    location,
+    category,
+    isRepeating,
+    repeatType,
+    repeatInterval,
+    repeatEndDate,
+    notificationTime,
+    editingEvent,
+  } = useEventForm();
   return (
     <AlertDialog
       isOpen={isOverlapDialogOpen}

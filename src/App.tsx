@@ -11,38 +11,7 @@ import { useNotifications } from './hooks/useNotifications.ts';
 import { useSearch } from './hooks/useSearch.ts';
 
 function App() {
-  const {
-    title,
-    setTitle,
-    date,
-    setDate,
-    startTime,
-    endTime,
-    description,
-    setDescription,
-    location,
-    setLocation,
-    category,
-    setCategory,
-    isRepeating,
-    setIsRepeating,
-    repeatType,
-    setRepeatType,
-    repeatInterval,
-    setRepeatInterval,
-    repeatEndDate,
-    setRepeatEndDate,
-    notificationTime,
-    setNotificationTime,
-    startTimeError,
-    endTimeError,
-    editingEvent,
-    setEditingEvent,
-    handleStartTimeChange,
-    handleEndTimeChange,
-    resetForm,
-    editEvent,
-  } = useEventForm();
+  const { editingEvent, setEditingEvent } = useEventForm();
 
   const { events, saveEvent, deleteEvent } = useEventOperations(Boolean(editingEvent), () =>
     setEditingEvent(null)
@@ -55,38 +24,7 @@ function App() {
   return (
     <Box w="full" h="100vh" m="auto" p={5}>
       <Flex gap={6} h="full">
-        <AddEventView
-          title={title}
-          setTitle={setTitle}
-          date={date}
-          setDate={setDate}
-          startTime={startTime}
-          endTime={endTime}
-          description={description}
-          setDescription={setDescription}
-          location={location}
-          setLocation={setLocation}
-          category={category}
-          setCategory={setCategory}
-          isRepeating={isRepeating}
-          setIsRepeating={setIsRepeating}
-          repeatType={repeatType}
-          setRepeatType={setRepeatType}
-          repeatInterval={repeatInterval}
-          setRepeatInterval={setRepeatInterval}
-          repeatEndDate={repeatEndDate}
-          setRepeatEndDate={setRepeatEndDate}
-          notificationTime={notificationTime}
-          setNotificationTime={setNotificationTime}
-          startTimeError={startTimeError}
-          endTimeError={endTimeError}
-          handleStartTimeChange={handleStartTimeChange}
-          handleEndTimeChange={handleEndTimeChange}
-          resetForm={resetForm}
-          editingEvent={editingEvent}
-          events={events}
-          saveEvent={saveEvent}
-        />
+        <AddEventView events={events} saveEvent={saveEvent} />
 
         <CalendarView
           view={view}
@@ -103,7 +41,6 @@ function App() {
           setSearchTerm={setSearchTerm}
           filteredEvents={filteredEvents}
           notifiedEvents={notifiedEvents}
-          editEvent={editEvent}
           deleteEvent={deleteEvent}
         />
       </Flex>

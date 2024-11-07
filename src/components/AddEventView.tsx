@@ -11,9 +11,10 @@ import {
   VStack,
   Input,
 } from '@chakra-ui/react';
-import React, { useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 
 import OverlapAlertDialog from './OverlapAlertDialog';
+import { useEventForm } from '../hooks/useEventForm';
 import { Event, EventForm, RepeatType } from '../types';
 import { findOverlappingEvents } from '../utils/eventOverlap';
 import { getTimeErrorMessage } from '../utils/timeValidation';
@@ -29,70 +30,41 @@ const notificationOptions = [
 ];
 
 interface Props {
-  title: string;
-  setTitle: React.Dispatch<React.SetStateAction<string>>;
-  date: string;
-  setDate: React.Dispatch<React.SetStateAction<string>>;
-  startTime: string;
-  endTime: string;
-  description: string;
-  setDescription: React.Dispatch<React.SetStateAction<string>>;
-  location: string;
-  setLocation: React.Dispatch<React.SetStateAction<string>>;
-  category: string;
-  setCategory: React.Dispatch<React.SetStateAction<string>>;
-  isRepeating: boolean;
-  setIsRepeating: React.Dispatch<React.SetStateAction<boolean>>;
-  repeatType: RepeatType;
-  setRepeatType: React.Dispatch<React.SetStateAction<RepeatType>>;
-  repeatInterval: number;
-  setRepeatInterval: React.Dispatch<React.SetStateAction<number>>;
-  repeatEndDate: string;
-  setRepeatEndDate: React.Dispatch<React.SetStateAction<string>>;
-  notificationTime: number;
-  setNotificationTime: React.Dispatch<React.SetStateAction<number>>;
-  startTimeError: string | null;
-  endTimeError: string | null;
-  handleStartTimeChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  handleEndTimeChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  resetForm: () => void;
-  editingEvent: Event | null;
   events: Event[];
   saveEvent: (eventData: Event | EventForm) => Promise<void>;
 }
 
-const AddEventView = ({
-  title,
-  setTitle,
-  date,
-  setDate,
-  startTime,
-  endTime,
-  description,
-  setDescription,
-  location,
-  setLocation,
-  category,
-  setCategory,
-  isRepeating,
-  setIsRepeating,
-  repeatType,
-  setRepeatType,
-  repeatInterval,
-  setRepeatInterval,
-  repeatEndDate,
-  setRepeatEndDate,
-  notificationTime,
-  setNotificationTime,
-  startTimeError,
-  endTimeError,
-  handleStartTimeChange,
-  handleEndTimeChange,
-  resetForm,
-  editingEvent,
-  events,
-  saveEvent,
-}: Props) => {
+const AddEventView = ({ events, saveEvent }: Props) => {
+  const {
+    title,
+    setTitle,
+    date,
+    setDate,
+    startTime,
+    endTime,
+    description,
+    setDescription,
+    location,
+    setLocation,
+    category,
+    setCategory,
+    isRepeating,
+    setIsRepeating,
+    repeatType,
+    setRepeatType,
+    repeatInterval,
+    setRepeatInterval,
+    repeatEndDate,
+    setRepeatEndDate,
+    notificationTime,
+    setNotificationTime,
+    startTimeError,
+    endTimeError,
+    editingEvent,
+    handleStartTimeChange,
+    handleEndTimeChange,
+    resetForm,
+  } = useEventForm();
   const [isOverlapDialogOpen, setIsOverlapDialogOpen] = useState(false);
   const [overlappingEvents, setOverlappingEvents] = useState<Event[]>([]);
   const cancelRef = useRef<HTMLButtonElement>(null);
@@ -277,19 +249,6 @@ const AddEventView = ({
         setIsOverlapDialogOpen={setIsOverlapDialogOpen}
         overlappingEvents={overlappingEvents}
         saveEvent={saveEvent}
-        editingEvent={editingEvent}
-        title={title}
-        date={date}
-        startTime={startTime}
-        endTime={endTime}
-        description={description}
-        location={location}
-        category={category}
-        isRepeating={isRepeating}
-        repeatType={repeatType}
-        repeatInterval={repeatInterval}
-        repeatEndDate={repeatEndDate}
-        notificationTime={notificationTime}
       />
     </>
   );
