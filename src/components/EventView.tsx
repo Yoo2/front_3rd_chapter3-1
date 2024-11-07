@@ -11,16 +11,9 @@ import {
 } from '@chakra-ui/react';
 import React from 'react';
 
+import { notificationOptions } from '../constants';
 import { useEventForm } from '../hooks/useEventForm';
 import { Event } from '../types';
-
-const notificationOptions = [
-  { value: 1, label: '1분 전' },
-  { value: 10, label: '10분 전' },
-  { value: 60, label: '1시간 전' },
-  { value: 120, label: '2시간 전' },
-  { value: 1440, label: '1일 전' },
-];
 
 interface Props {
   searchTerm: string;
